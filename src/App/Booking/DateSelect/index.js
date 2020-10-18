@@ -1,58 +1,74 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import moment from "moment";
+import { Row, Col, DatePicker, Form, Button } from "antd";
+const { RangePicker } = DatePicker;
+import "moment/locale/tr";
+import locale from "antd/es/date-picker/locale/tr_TR";
 
-export default function DateSelect() {
-  const [checkIn, setCheckIn] = useState(moment().format("YYYY-MM-DD"));
-  const [checkOut, setCheckOut] = useState(moment().format("YYYY-MM-DD"));
-  const [min, setMin] = useState(moment().format("YYYY-MM-DD"));
-  const [max] = useState(moment().add(2, "years").format("YYYY-MM-DD"));
+export default function DateSelect({ formData, sendParent, backButton }) {
+  const [formDate] = Form.useForm();
 
-  function handleChangeCheckIn(e) {
-    setCheckIn(e.target.value);
-    setMin(e.target.value);
-    setCheckOut(e.target.value);
+  useEffect(() => {
+    const checkInOut =
+      JSON.parse(localStorage.getItem("TtravelForm")) &&
+      JSON.parse(localStorage.getItem("TtravelForm")).checkInOut;
+    if (formData != null) {
+      formDate.setFieldsValue(formData);
+    } else if (checkInOut != null) {
+      formDate.setFieldsValue({
+        checkInOut: [moment(checkInOut[0]), moment(checkInOut[1])],
+      });
+    }
+  }, []);
+
+  function disabledDate(current) {
+    return current < moment().endOf("day");
   }
-  function handleChangeCheckOut(e) {
-    setCheckOut(e.target.value);
-  }
+
+  const layout = {
+    labelCol: { span: 24 },
+  };
 
   return (
     <>
-      <div className="container-sm">
-        <form className="mt-5">
-          <div className="form-group row justify-content-center">
-            <label htmlFor="start" className="col-2  col-form-label">
-              Check-in Tarihi:
-            </label>
-            <input
-              className="col-2"
-              type="date"
-              id="start"
-              name="checkIn"
-              value={checkIn}
-              min={min}
-              max={max}
-              onChange={handleChangeCheckIn}
-            />
-            <div className="valid-feedback">Looks good!</div>
-          </div>
-          <div className="form-group row justify-content-center">
-            <label htmlFor="start" className="col-2  col-form-label">
-              Check-out Tarihi:
-            </label>
-            <input
-              className="col-2"
-              type="date"
-              id="end"
-              name="checkOut"
-              value={checkOut}
-              min={min}
-              max={max}
-              onChange={handleChangeCheckOut}
-            />
-          </div>
-        </form>
-      </div>
+      <Row gutter={24} justify="center">
+        <Col xs={24}>
+          <Form
+            {...layout}
+            style={{ marginTop: "42px" }}
+            form={formDate}
+            name="basic"
+            onFinish={(e) => sendParent({ form: "form0", e })}
+          >
+            <Form.Item
+              label="Giriş ve Çıkış Tarihleri:"
+              name="checkInOut"
+              rules={[
+                {
+                  required: true,
+                  message: "Lutfen giriş tarihi seçiniz",
+                },
+              ]}
+            >
+              <RangePicker
+                className="custom-picker"
+                locale={locale}
+                disabledDate={disabledDate}
+                format="DD-MM-YYYY"
+              />
+            </Form.Item>
+
+            <Form.Item>
+              <Row justify="space-between">
+                <Button onClick={backButton}>Geri</Button>
+                <Button type="primary" htmlType="submit">
+                  İlerle
+                </Button>
+              </Row>
+            </Form.Item>
+          </Form>
+        </Col>
+      </Row>
     </>
   );
 }
