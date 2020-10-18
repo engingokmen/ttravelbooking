@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Cards from "react-credit-cards";
 import NumberFormat from "react-number-format";
 
-export default function Payment({ handleBackButton, handleForwardButton }) {
+export default function Payment() {
   const [cvc, setCvc] = useState("");
   const [expiry, setExpiry] = useState("");
   const [focus, setFocus] = useState("");

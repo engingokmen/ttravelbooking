@@ -2,15 +2,12 @@ import React, { useState } from "react";
 import Date from "./DateSelect";
 import Room from "./RoomSelect";
 import Payment from "./Payment";
-// import { useNavigate } from "@reach/router";
 
 export default function Booking() {
   const [page, setPage] = useState(0);
 
-  function handleBackButton(e) {
-    console.log(e);
+  function handleBackButton() {
     if (page !== 0) {
-      // navigate(`/invoices/${newInvoice.id}`);
       setPage(page - 1);
     }
   }
@@ -25,13 +22,25 @@ export default function Booking() {
     <div className="container">
       <div className="row justify-content-center">
         <div className="btn-group btn-group-lg" role="group" aria-label="...">
-          <button type="button" className="btn btn-link">
+          <button
+            type="button"
+            className="btn btn-link"
+            onClick={() => setPage(0)}
+          >
             Tarih
           </button>
-          <button type="button" className="btn btn-link">
+          <button
+            type="button"
+            className="btn btn-link"
+            onClick={() => setPage(1)}
+          >
             Oda
           </button>
-          <button type="button" className="btn btn-link">
+          <button
+            type="button"
+            className="btn btn-link"
+            onClick={() => setPage(2)}
+          >
             Ödeme
           </button>
         </div>

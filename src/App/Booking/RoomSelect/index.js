@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function DateSelect({ handleBackButton, handleForwardButton }) {
+export default function DateSelect() {
   return (
     <>
       <div>date select verileri gelecek</div>

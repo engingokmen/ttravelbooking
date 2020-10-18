@@ -16,11 +16,7 @@ export default function Routing() {
       <Navigation />
       <Router>
         <Home path="/" />
-        <Booking path="booking">
-          {/* <DateSelect path="date" />
-          <RoomSelect path="room" />
-          <Payment path="payment" /> */}
-        </Booking>
+        <Booking path="booking" />
         <NotFound default />
       </Router>
     </>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import moment from "moment";
 
-export default function DateSelect({ handleBackButton, handleForwardButton }) {
+export default function DateSelect() {
   const [checkIn, setCheckIn] = useState(moment().format("YYYY-MM-DD"));
   const [checkOut, setCheckOut] = useState(moment().format("YYYY-MM-DD"));
   const [min, setMin] = useState(moment().format("YYYY-MM-DD"));
