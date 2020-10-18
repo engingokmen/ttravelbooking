@@ -1,6 +1,6 @@
 import React from "react";
-import Routing from "./App/Routing";
+import Navigation from "./App/Navigation";
 
 export default function App() {
-  return <Routing />;
+  return <Navigation />;
 }

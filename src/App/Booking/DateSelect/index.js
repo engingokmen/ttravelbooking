@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import moment from "moment";
 import { Row, Col, DatePicker, Form, Button } from "antd";
 const { RangePicker } = DatePicker;
 import "moment/locale/tr";
 import locale from "antd/es/date-picker/locale/tr_TR";
 
-export default function DateSelect({ formDate, sendParent }) {
-  // const [form] = Form.useForm();
+export default function DateSelect({ formData, sendParent, backButton }) {
+  const [formDate] = Form.useForm();
+
+  useEffect(() => {
+    const checkInOut =
+      JSON.parse(localStorage.getItem("TtravelForm")) &&
+      JSON.parse(localStorage.getItem("TtravelForm")).checkInOut;
+    if (formData != null) {
+      formDate.setFieldsValue(formData);
+    } else if (checkInOut != null) {
+      formDate.setFieldsValue({
+        checkInOut: [moment(checkInOut[0]), moment(checkInOut[1])],
+      });
+    }
+  }, []);
 
   function disabledDate(current) {
     return current < moment().endOf("day");
@@ -16,29 +29,20 @@ export default function DateSelect({ formDate, sendParent }) {
     labelCol: { span: 24 },
   };
 
-  // useEffect(() => {
-  //   form.initialValues = {
-  //     checkIn: moment().format("YYYY-MM-DD"),
-  //   };
-  // }, []);
-
   return (
     <>
       <Row gutter={24} justify="center">
-        <Col span="16">
+        <Col xs={24}>
           <Form
             {...layout}
             style={{ marginTop: "42px" }}
             form={formDate}
             name="basic"
-            // initialValues={{
-            //   checkIn: min,
-            // }}
-            onFinish={(e) => sendParent(e)}
+            onFinish={(e) => sendParent({ form: "form0", e })}
           >
             <Form.Item
               label="Giriş ve Çıkış Tarihleri:"
-              name="checkIn"
+              name="checkInOut"
               rules={[
                 {
                   required: true,
@@ -56,9 +60,7 @@ export default function DateSelect({ formDate, sendParent }) {
 
             <Form.Item>
               <Row justify="space-between">
-                <Button type="primary" htmlType="submit">
-                  Geri
-                </Button>
+                <Button onClick={backButton}>Geri</Button>
                 <Button type="primary" htmlType="submit">
                   İlerle
                 </Button>

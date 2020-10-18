@@ -1,12 +1,32 @@
-// // Your variable overrides
-// $body-bg: rgb(16, 240, 109);
-// $body-color: rgb(63, 50, 243);
-
-// $theme-colors: (
-//   "primary": #cf43bd,
-//   "danger": #ff4136,
-// );
-
 .custom-picker {
   width: 100%;
+}
+
+.ant-card-body {
+  background-color: whitesmoke;
+  font-size: small;
+}
+
+.ant-card-body p {
+  margin-bottom: 4px;
+}
+
+.site-layout-content {
+  background: #fff;
+  padding: 24px;
+  min-height: calc(100vh-181px);
+}
+
+.ant-steps-horizontal.ant-steps-label-horizontal {
+  flex-direction: row;
+}
+
+@media (max-width: 480px) {
+  .ant-steps-horizontal.ant-steps-label-horizontal
+    > .ant-steps-item
+    > .ant-steps-item-container
+    > .ant-steps-item-tail::after {
+    width: 0px;
+    height: 0;
+  }
 }

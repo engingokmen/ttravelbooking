@@ -1,25 +1,59 @@
-import React from "react";
-import { Row, Col, DatePicker, Form, Button, Radio } from "antd";
+import React, { useEffect } from "react";
+import { Row, Col, Form, Button, Radio, Card, Divider } from "antd";
 
 const layout = {
   labelCol: { span: 24 },
 };
 
-export default function DateSelect({ formRoom, sendParent }) {
+export default function DateSelect({
+  formData,
+  sendParent,
+  backButton,
+  previousData0,
+}) {
+  const [formRoom] = Form.useForm();
+
+  useEffect(() => {
+    const roomType =
+      JSON.parse(localStorage.getItem("TtravelForm")) &&
+      JSON.parse(localStorage.getItem("TtravelForm")).roomType;
+    const sceneType =
+      JSON.parse(localStorage.getItem("TtravelForm")) &&
+      JSON.parse(localStorage.getItem("TtravelForm")).sceneType;
+    if (formData != null) {
+      formRoom.setFieldsValue(formData);
+    } else if (roomType != null || sceneType != null) {
+      formRoom.setFieldsValue({
+        roomType,
+        sceneType,
+      });
+    }
+  }, []);
+
   return (
     <>
       <Row gutter={24} justify="center">
-        <Col span="16">
+        <Col xs={24}>
+          <Divider />
+          <Card size="small" style={{ width: "100%" }}>
+            <p>
+              <span>Giriş Tarihi: </span>
+              <span>{previousData0.checkInOut[0].format("DD.MM.YYYY")}</span>
+            </p>
+            <p>
+              <span>Çıkış Tarihi: </span>
+              <span>{previousData0.checkInOut[1].format("DD.MM.YYYY")}</span>
+            </p>
+          </Card>
+        </Col>
+
+        <Col xs={24}>
+          <Divider />
           <Form
             {...layout}
-            style={{ marginTop: "42px" }}
             form={formRoom}
             name="basic"
-            // initialValues={{
-            //   checkIn: min,
-            // }}
-            onFinish={(e) => sendParent(e)}
-            // onFinishFailed={onFinishFailed}
+            onFinish={(e) => sendParent({ form: "form1", e })}
           >
             <Form.Item
               name="roomType"
@@ -38,7 +72,7 @@ export default function DateSelect({ formRoom, sendParent }) {
               </Radio.Group>
             </Form.Item>
             <Form.Item
-              name="sceenType"
+              name="sceneType"
               label="Manzara Tipi:"
               rules={[
                 {
@@ -55,9 +89,7 @@ export default function DateSelect({ formRoom, sendParent }) {
 
             <Form.Item>
               <Row justify="space-between">
-                <Button type="primary" htmlType="submit">
-                  Geri
-                </Button>
+                <Button onClick={backButton}>Geri</Button>
                 <Button type="primary" htmlType="submit">
                   İlerle
                 </Button>
