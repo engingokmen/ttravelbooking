@@ -2,9 +2,7 @@ import React from "react";
 import { Router } from "@reach/router";
 import Home from "./Home";
 import Booking from "./Booking";
-import DateSelect from "./Booking/DateSelect";
-import RoomSelect from "./Booking/RoomSelect";
-import Payment from "./Booking/Payment";
+
 import Navigation from "./Navigation";
 
 export default function Routing() {
@@ -19,9 +17,9 @@ export default function Routing() {
       <Router>
         <Home path="/" />
         <Booking path="booking">
-          <DateSelect path="date" />
+          {/* <DateSelect path="date" />
           <RoomSelect path="room" />
-          <Payment path="payment" />
+          <Payment path="payment" /> */}
         </Booking>
         <NotFound default />
       </Router>

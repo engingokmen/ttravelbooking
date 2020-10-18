@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Cards from "react-credit-cards";
 import NumberFormat from "react-number-format";
 
-export default function Payment() {
+export default function Payment({ handleBackButton, handleForwardButton }) {
   const [cvc, setCvc] = useState("");
   const [expiry, setExpiry] = useState("");
   const [focus, setFocus] = useState("");
@@ -14,7 +14,7 @@ export default function Payment() {
   }
 
   return (
-    <div id="PaymentForm">
+    <div className="mt-5" id="PaymentForm">
       <Cards
         cvc={cvc}
         expiry={expiry}
@@ -44,14 +44,14 @@ export default function Payment() {
                 onFocus={handleInputFocus}
                 placeholder="Kart Numarası"
               />
-              <input
+              <NumberFormat
                 className="mt-1"
-                value={cvc}
-                type="text"
                 name="cvc"
-                placeholder="CVC"
+                value={cvc}
+                format="###"
                 onChange={(e) => setCvc(e.target.value)}
                 onFocus={handleInputFocus}
+                placeholder="CVC"
               />
               <NumberFormat
                 className="mt-1"
