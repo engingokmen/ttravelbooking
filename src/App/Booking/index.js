@@ -1,9 +1,15 @@
 import React, { useState } from "react";
+import { Steps, Row, Col, Form, Button } from "antd";
+const { Step } = Steps;
 import Date from "./DateSelect";
 import Room from "./RoomSelect";
 import Payment from "./Payment";
 
 export default function Booking() {
+  const [formDate] = Form.useForm();
+  const [formRoom] = Form.useForm();
+  const [formPayment] = Form.useForm();
+
   const [page, setPage] = useState(0);
 
   function handleBackButton() {
@@ -18,54 +24,35 @@ export default function Booking() {
     }
   }
 
+  function stepChange() {
+    return;
+  }
+
+  function handleB() {
+    console.log(JSON.stringify(formDate.getFieldsValue(), null, 2));
+  }
+
+  const onFinish = (values) => {
+    console.log("valuesss", values);
+    handleForwardButton();
+  };
+
   return (
-    <div className="container">
-      <div className="row justify-content-center">
-        <div className="btn-group btn-group-lg" role="group" aria-label="...">
-          <button
-            type="button"
-            className="btn btn-link"
-            onClick={() => setPage(0)}
-          >
-            Tarih
-          </button>
-          <button
-            type="button"
-            className="btn btn-link"
-            onClick={() => setPage(1)}
-          >
-            Oda
-          </button>
-          <button
-            type="button"
-            className="btn btn-link"
-            onClick={() => setPage(2)}
-          >
-            Ödeme
-          </button>
-        </div>
-      </div>
-      {page === 0 ? <Date /> : page === 1 ? <Room /> : <Payment />}
-      <div className="row justify-content-center mt-5">
-        <div className="col-1">
-          <button
-            onClick={handleBackButton}
-            type="button"
-            className="btn btn-secondary"
-          >
-            Geri
-          </button>
-        </div>
-        <div className="col-1 text-right">
-          <button
-            onClick={handleForwardButton}
-            type="button"
-            className="btn btn-primary"
-          >
-            İleri
-          </button>
-        </div>
-      </div>
-    </div>
+    <Row justify="center">
+      <Col span="8">
+        <Steps size="small" current={page} onChange={stepChange}>
+          <Step title="Tarih" onClick={() => setPage(0)} />
+          <Step title="Oda" onClick={() => setPage(1)} />
+          <Step title="Ödeme" onClick={() => setPage(2)} />
+        </Steps>
+        {page === 0 ? (
+          <Date formDate={formDate} sendParent={onFinish} />
+        ) : page === 1 ? (
+          <Room formDate={formRoom} sendParent={onFinish} />
+        ) : (
+          <Payment formDate={formPayment} sendParent={onFinish} />
+        )}
+      </Col>
+    </Row>
   );
 }

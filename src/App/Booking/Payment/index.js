@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { Form, Input, Button, Row, Col } from "antd";
 import Cards from "react-credit-cards";
 import NumberFormat from "react-number-format";
 
-export default function Payment() {
+export default function Payment({ formPayment, sendParent }) {
   const [cvc, setCvc] = useState("");
   const [expiry, setExpiry] = useState("");
   const [focus, setFocus] = useState("");
@@ -14,30 +15,56 @@ export default function Payment() {
   }
 
   return (
-    <div className="mt-5" id="PaymentForm">
-      <Cards
-        cvc={cvc}
-        expiry={expiry}
-        focused={focus}
-        name={name}
-        number={number}
-      />
-      <form className="mt-2 needs-validation" noValidate>
-        <div className="form-group row justify-content-center">
-          <div className="col-3 justify-content-center">
-            <div className="row justify-content-center">
-              <input
-                className="mt-1"
-                value={name}
-                type="text"
-                name="name"
+    <>
+      <Row gutter={24} justify="center">
+        <Col>
+          <div className="mt-5" id="PaymentForm">
+            <Cards
+              cvc={cvc}
+              expiry={expiry}
+              focused={focus}
+              name={name}
+              number={number}
+            />
+          </div>
+        </Col>
+
+        <Col span="15" style={{ marginTop: "24px" }}>
+          <Form
+            form={formPayment}
+            name="basic"
+            // initialValues={{
+            //   checkIn: min,
+            // }}
+            onFinish={(e) => sendParent(e)}
+            // onFinishFailed={onFinishFailed}
+          >
+            <Form.Item
+              name="name"
+              rules={[
+                {
+                  required: true,
+                  message: "Lutfen kart ismini giriniz",
+                },
+              ]}
+            >
+              <Input
                 placeholder="Ad Soyad"
                 onChange={(e) => setName(e.target.value)}
                 onFocus={handleInputFocus}
               />
-              <div className="valid-feedback">Looks good!</div>
+            </Form.Item>
+            <Form.Item
+              name="number"
+              rules={[
+                {
+                  required: true,
+                  message: "Lutfen kart numarasını girniz",
+                },
+              ]}
+            >
               <NumberFormat
-                className="mt-1"
+                className="ant-input"
                 name="number"
                 value={number}
                 format="#### #### #### ####"
@@ -45,8 +72,18 @@ export default function Payment() {
                 onFocus={handleInputFocus}
                 placeholder="Kart Numarası"
               />
+            </Form.Item>
+            <Form.Item
+              name="number"
+              rules={[
+                {
+                  required: true,
+                  message: "Lutfen kart güvenlik numarasını girniz",
+                },
+              ]}
+            >
               <NumberFormat
-                className="mt-1"
+                className="ant-input"
                 name="cvc"
                 value={cvc}
                 format="###"
@@ -54,8 +91,18 @@ export default function Payment() {
                 onFocus={handleInputFocus}
                 placeholder="CVC"
               />
+            </Form.Item>
+            <Form.Item
+              name="number"
+              rules={[
+                {
+                  required: true,
+                  message: "Lutfen kart geçerlilik tarihini giriniz",
+                },
+              ]}
+            >
               <NumberFormat
-                className="mt-1"
+                className="ant-input"
                 value={expiry}
                 format="##/##"
                 placeholder="MM/YY"
@@ -63,10 +110,21 @@ export default function Payment() {
                 onChange={(e) => setExpiry(e.target.value)}
                 onFocus={handleInputFocus}
               />
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
+            </Form.Item>
+
+            <Form.Item>
+              <Row justify="space-between">
+                <Button type="primary" htmlType="submit">
+                  Geri
+                </Button>
+                <Button type="primary" htmlType="submit">
+                  İlerle
+                </Button>
+              </Row>
+            </Form.Item>
+          </Form>
+        </Col>
+      </Row>
+    </>
   );
 }
