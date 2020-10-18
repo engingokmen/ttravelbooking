@@ -22,7 +22,7 @@ export default function Payment() {
         name={name}
         number={number}
       />
-      <form className="mt-2">
+      <form className="mt-2 needs-validation" noValidate>
         <div className="form-group row justify-content-center">
           <div className="col-3 justify-content-center">
             <div className="row justify-content-center">
@@ -35,6 +35,7 @@ export default function Payment() {
                 onChange={(e) => setName(e.target.value)}
                 onFocus={handleInputFocus}
               />
+              <div className="valid-feedback">Looks good!</div>
               <NumberFormat
                 className="mt-1"
                 name="number"

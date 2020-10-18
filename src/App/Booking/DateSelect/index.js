@@ -34,6 +34,7 @@ export default function DateSelect() {
               max={max}
               onChange={handleChangeCheckIn}
             />
+            <div className="valid-feedback">Looks good!</div>
           </div>
           <div className="form-group row justify-content-center">
             <label htmlFor="start" className="col-2  col-form-label">
