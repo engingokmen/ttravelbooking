@@ -15,18 +15,18 @@ export default function Navigation() {
           <div className="logo" />
           <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}>
             <Menu.Item key="1">
-              <Link to="/">T Travel</Link>
+              <Link to="ttravel">T Travel</Link>
             </Menu.Item>
             <Menu.Item key="2">
-              <Link to="booking">Rezervasyon</Link>
+              <Link to="/">Rezervasyon</Link>
             </Menu.Item>
           </Menu>
         </Header>
         <Content>
           <div className="site-layout-content">
             <Router>
-              <Home path="/" />
-              <Booking path="booking" />
+              <Home path="ttravel" />
+              <Booking path="/" />
             </Router>
           </div>
         </Content>

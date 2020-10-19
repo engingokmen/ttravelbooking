@@ -15,6 +15,10 @@ export default function Payment({
   const [focus, setFocus] = useState("");
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
+  const [cvcErr, setCvcErr] = useState(null);
+  const [cvcErrStatus, setCvcErrStatus] = useState(null);
+  const [numErr, setNumErr] = useState(null);
+  const [numErrStatus, setNumErrStatus] = useState(null);
 
   const [formPayment] = Form.useForm();
 
@@ -56,6 +60,51 @@ export default function Payment({
     }
   }, []);
 
+  function limit(val, max) {
+    if (val.length === 1 && val[0] > max[0]) {
+      val = "0" + val;
+    }
+
+    if (val.length === 2) {
+      if (Number(val) === 0) {
+        val = "01";
+      } else if (val > max) {
+        val = max;
+      }
+    }
+
+    return val;
+  }
+
+  function cardExpiry(val) {
+    let month = limit(val.substring(0, 2), "12");
+    let year = val.substring(2, 4);
+
+    return month + (year.length ? "/" + year : "");
+  }
+
+  function handleSubmit(e) {
+    if (e.number.split(" ").join("").length < 16) {
+      setNumErr("Lütfen kart numarasının 16 hane olduğundan emin olunuz");
+      setNumErrStatus("error");
+      return;
+    } else {
+      setNumErr(null);
+      setNumErrStatus(null);
+    }
+
+    if (e.cvc.length < 3) {
+      setCvcErr("Lütfen güvenlik numarasının 3 hane olduğundan emin olunuz");
+      setCvcErrStatus("error");
+      return;
+    } else {
+      setCvcErr(null);
+      setCvcErrStatus(null);
+    }
+
+    sendParent({ form: "form2", e });
+  }
+
   return (
     <>
       <Row gutter={24} justify="center">
@@ -94,11 +143,7 @@ export default function Payment({
         </Col>
 
         <Col span="15" style={{ marginTop: "24px" }}>
-          <Form
-            form={formPayment}
-            name="basic"
-            onFinish={(e) => sendParent({ form: "form2", e })}
-          >
+          <Form form={formPayment} name="basic" onFinish={handleSubmit}>
             <Form.Item
               name="name"
               rules={[
@@ -116,6 +161,8 @@ export default function Payment({
             </Form.Item>
             <Form.Item
               name="number"
+              validateStatus={numErrStatus}
+              help={numErr}
               rules={[
                 {
                   required: true,
@@ -135,6 +182,8 @@ export default function Payment({
             </Form.Item>
             <Form.Item
               name="cvc"
+              validateStatus={cvcErrStatus}
+              help={cvcErr}
               rules={[
                 {
                   required: true,
@@ -147,6 +196,7 @@ export default function Payment({
                 name="cvc"
                 value={cvc}
                 format="###"
+                min={3}
                 onChange={(e) => setCvc(e.target.value)}
                 onFocus={handleInputFocus}
                 placeholder="CVC"
@@ -164,7 +214,7 @@ export default function Payment({
               <NumberFormat
                 className="ant-input"
                 value={expiry}
-                format="##/##"
+                format={cardExpiry}
                 placeholder="MM/YY"
                 mask={["M", "M", "Y", "Y"]}
                 onChange={(e) => setExpiry(e.target.value)}
