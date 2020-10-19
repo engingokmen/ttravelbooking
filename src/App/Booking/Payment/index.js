@@ -93,7 +93,7 @@ export default function Payment({
       setNumErrStatus(null);
     }
 
-    if (e.cvc.length < 3) {
+    if (e.cvc.split(" ").join("").length < 3) {
       setCvcErr("Lütfen güvenlik numarasının 3 hane olduğundan emin olunuz");
       setCvcErrStatus("error");
       return;
